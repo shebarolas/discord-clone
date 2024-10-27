@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
 import { ThemeProvider } from "@/components/providers/theme-provider";
+import ModalProvider from "@/components/providers/ModalProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -21,7 +22,9 @@ export default function RootLayout({
       <html lang="en">
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false} storageKey="discord-theme" >
           <body className={inter.className}>{children}</body>
+          <ModalProvider />
         </ThemeProvider>
+
       </html>
     </ClerkProvider>
   );
