@@ -1,3 +1,4 @@
+import { ChannelType } from "@prisma/client";
 import {z} from "zod"
 
 export const FormSchema = z.object({
@@ -9,4 +10,15 @@ export const FormSchema = z.object({
     })
 });
 
+export const ChannelFormSchema = z.object({
+    name: z.string().min(1, {
+        message: "El nombre del canal es requerido"
+    }).refine(
+        name => name !== "general", {message: "El nombre del canal no puede ser 'general'"}
+    ),
+    type: z.nativeEnum(ChannelType)
+});
+
+
 export type FormSchemaType = z.infer<typeof FormSchema>;
+export type ChannelFormSchemaType = z.infer<typeof ChannelFormSchema>;

@@ -1,6 +1,6 @@
 import { Server } from '@prisma/client';
 import { create } from 'zustand';
-export type ModalType = "createServer" |"inivte"
+export type ModalType = "createServer" |"inivte" | "editServer" | "editMembers" | "createChannel"
 interface DataModal {
     server?: Server
 }
@@ -20,7 +20,7 @@ export const modalStore = create<State & Action>((set) => ({
     isOpen: false,
     type: null,
     data: {},
-    onOpen: (type, data) => set({ isOpen: true, type, data }),
+    onOpen: (type, data={}) => set({ isOpen: true, type, data }),
     onClose: () => set({ isOpen: false, type: null }),
 }));
 

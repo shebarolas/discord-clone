@@ -33,7 +33,7 @@ export default function ServerHeader({ rol, server }: Props) {
                                 Invitar miembros
                                 <UserPlus className='ml-auto h-5 w-5' />
                             </DropdownMenuItem>
-                            <DropdownMenuItem className='px-3 py-2 text-sm cursor-pointer'>
+                            <DropdownMenuItem onClick={()=> onOpen("createChannel", {server})} className='px-3 py-2 text-sm cursor-pointer'>
                                 Crear canales
                                 <PlusCircle className='ml-auto h-5 w-5'/>
                             </DropdownMenuItem>
@@ -43,11 +43,11 @@ export default function ServerHeader({ rol, server }: Props) {
                 {
                     isAdmin && (
                         <div>
-                            <DropdownMenuItem className='px-3 py-2 text-sm cursor-pointer'>
+                            <DropdownMenuItem onClick={() => onOpen("editServer", {server})} className='px-3 py-2 text-sm cursor-pointer'>
                                 Configuración del servidor
                                 <Settings className='ml-auto h-5 w-5' />
                             </DropdownMenuItem>
-                            <DropdownMenuItem className='px-3 py-2 text-sm cursor-pointer'>
+                            <DropdownMenuItem onClick={() => onOpen("editMembers", {server})} className='px-3 py-2 text-sm cursor-pointer'>
                                 Manejar miembros
                                 <UserCheck className='ml-auto h-5 w-5' />
                             </DropdownMenuItem>
