@@ -40,20 +40,20 @@ export default function CreateChannel() {
         formData,
         serverId: params?.serverId
       });
-      router.refresh();
       reset();
+      router.refresh();
       onClose();
     } catch (error) {
       console.log(error)
     }
-   
+
   }
-  const handleClose = () =>{
-    reset();
+  const handleClose = () => {
     onClose();
+    reset();
   }
 
- 
+
 
   return (
     <Dialog open={isOpenModal} onOpenChange={handleClose}>
@@ -62,61 +62,62 @@ export default function CreateChannel() {
           <DialogTitle className="text-xl text-center">
             Crear canal para servidor
           </DialogTitle>
+          <DialogDescription className="text-center text-zinc-500">
+            Crea un nuevo canal para tu servidor
+          </DialogDescription>
         </DialogHeader>
-        <Form control={control}>
-          <form onClick={handleSubmit(onSubmit)}>
-            <div className="px-6">
-              <label htmlFor="nameServer" className="uppercase text-xs font-bold text-zinc-500 dark:text-secondary/70">
-                Nombre del canal
-              </label>
-              <Input
-                disabled={
-                  isLoading
-                }
-                placeholder="Nombre del canal"
-                className="bg-purple-300 border-none mt-0 focus-visible:ring-0 text-black focus-visible:ring-offset-0 placeholder:text-black"
-                id="nameServer"
-                type="text"
-                {...register("name")}
-              />
-              {errors.name && <InputError message={errors.name.message} />}
-            </div>
-            <div className="px-6">
-              <label htmlFor="channelType" className="uppercase text-xs font-bold text-zinc-500 dark:text-secondary/70">
-                Tipo de canal
-              </label>
-              <Controller name="type" control={control} render={({ field }) => (
-                <Select
-                  {...field}
-                  onValueChange={(value) => {
-                    field.onChange(value);
-                  }}
-                  disabled={ isLoading }
-                >
-                  <SelectTrigger className="bg-zinc-300/50 border-0 focus:ring-0 text-black ring-offset-0 focus:ring-offset-0 capitalize outline-none">
-                    <SelectValue placeholder="Seleccionar el tipo de canal" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {
-                      Object.values(ChannelType).map((type) => (
-                        <SelectItem key={type} value={type} className="capitalize">
-                          {type.toLowerCase()}
-                        </SelectItem>
-                      ))
-                    }
-                  </SelectContent>
-                </Select>
-              )} />
-              {errors.type && <InputError message={errors.type.message} />}
-            </div>
-            <DialogFooter className="px-6 py-4">
-              <Button disabled={isLoading} type="submit" className="bg-purple-900 text-white hover:bg-purple-900/70 transition-all">
-                Crear Canal
-              </Button>
-            </DialogFooter>
-          </form>
-        </Form>
 
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <div className="px-6">
+            <label htmlFor="nameServer" className="uppercase text-xs font-bold text-zinc-500 dark:text-secondary/70">
+              Nombre del canal
+            </label>
+            <Input
+              disabled={
+                isLoading
+              }
+              placeholder="Nombre del canal"
+              className="bg-purple-300 border-none mt-0 focus-visible:ring-0 text-black focus-visible:ring-offset-0 placeholder:text-black"
+              id="nameServer"
+              type="text"
+              {...register("name")}
+            />
+            {errors.name && <InputError message={errors.name.message} />}
+          </div>
+          <div className="px-6">
+            <label htmlFor="channelType" className="uppercase text-xs font-bold text-zinc-500 dark:text-secondary/70">
+              Tipo de canal
+            </label>
+            <Controller name="type" control={control} render={({ field }) => (
+              <Select
+                {...field}
+                onValueChange={(value) => {
+                  field.onChange(value);
+                }}
+                disabled={isLoading}
+              >
+                <SelectTrigger className="bg-zinc-300/50 border-0 focus:ring-0 text-black ring-offset-0 focus:ring-offset-0 capitalize outline-none">
+                  <SelectValue placeholder="Seleccionar el tipo de canal" />
+                </SelectTrigger>
+                <SelectContent>
+                  {
+                    Object.values(ChannelType).map((type) => (
+                      <SelectItem key={type} value={type} className="capitalize">
+                        {type.toLowerCase()}
+                      </SelectItem>
+                    ))
+                  }
+                </SelectContent>
+              </Select>
+            )} />
+            {errors.type && <InputError message={errors.type.message} />}
+          </div>
+          <DialogFooter className="px-6 py-4">
+            <Button disabled={isLoading} type="submit" className="bg-purple-900 text-white hover:bg-purple-900/70 transition-all">
+              Crear Canal
+            </Button>
+          </DialogFooter>
+        </form>
       </DialogContent>
     </Dialog>
   )

@@ -74,7 +74,7 @@ export default function ServerHeader({ rol, server }: Props) {
               <UserCheck className="ml-auto h-5 w-5" />
             </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem className="text-red-600 dark:text-red-400 px-3 py-2 text-sm cursor-pointer">
+            <DropdownMenuItem className="text-red-600 dark:text-red-400 px-3 py-2 text-sm cursor-pointer" onClick={()=> onOpen("deleteServer", {server})}>
               Eliminar servidor
               <Trash2 className="ml-auto h-5 w-5" />
             </DropdownMenuItem>

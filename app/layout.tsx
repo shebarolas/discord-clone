@@ -24,7 +24,6 @@ export default function RootLayout({
           <body className={inter.className}>{children}</body>
           <ModalProvider />
         </ThemeProvider>
-
       </html>
     </ClerkProvider>
   );

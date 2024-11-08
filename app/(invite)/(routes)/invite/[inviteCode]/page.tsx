@@ -25,7 +25,6 @@ export default async function InviteCodePage({params}: Props) {
             }
         }
     });
-    console.log(existServer);
 
     if(existServer) return redirect(`/servers/${existServer.id}`);
 

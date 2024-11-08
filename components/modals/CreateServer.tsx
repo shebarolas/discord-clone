@@ -35,7 +35,6 @@ export default function CreateServer() {
 
 
   const CreateServer: SubmitHandler<FormSchemaType> = async (formData) => {
-    console.log(formData)
     try {
       await axios.post("/api/server", formData);
       reset();

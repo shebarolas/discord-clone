@@ -7,6 +7,7 @@ import EditServer from "../modals/EditServer";
 import EditMembers from "../modals/EditMembers";
 import CreateChannel from "../modals/CreateChannel";
 import LeaveServer from "../modals/LeaveServer";
+import DeleteServer from "../modals/DeleteServer";
 
 export default function ModalProvider() {
   const [isMounted, setIsMounted] = useState<boolean>(false);
@@ -22,6 +23,7 @@ export default function ModalProvider() {
       <EditMembers />
       <CreateChannel />
       <LeaveServer />
+      <DeleteServer/>
     </div>
   );
 }
