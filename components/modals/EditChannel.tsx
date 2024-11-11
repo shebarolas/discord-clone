@@ -13,14 +13,14 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from ".
 import axios from "axios";
 import { useEffect } from "react";
 
-export default function CreateChannel() {
+export default function EditChannel() {
 
   const { isOpen, onClose, type, data } = useModal();
-  console.log(data)
+
   const params = useParams();
   const router = useRouter();
-  const isOpenModal = isOpen && type === "createChannel"
-  const channelType = data?.channelType;
+  const isOpenModal = isOpen && type === "editChannel"
+  const channel = data?.channel
   const {
     register,
     handleSubmit,
@@ -31,26 +31,27 @@ export default function CreateChannel() {
   } = useForm<ChannelFormSchemaType>({
     resolver: zodResolver(ChannelFormSchema),
     defaultValues: {
-      name: "",
-      type: ChannelType.TEXT || channelType
+      name: channel?.name,
+      type: channel?.type
     }
   });
 
   useEffect(()=> {
-    if(channelType){
-      setValue("type", channelType)
+    if(channel){
+      setValue("type", channel.type)
+      setValue("name", channel.name);
     }else{
       setValue("type", ChannelType.TEXT)
     }
-  }, [channelType]);
+  }, [ channel]);
 
 
   const onSubmit: SubmitHandler<ChannelFormSchemaType> = async (formData) => {
   
     try {
-      await axios.post(`/api/channels`, {
-        formData,
-        serverId: params?.serverId
+      await axios.patch(`/api/channels/${channel?.id}`, {
+        serverId: params?.serverId,
+        formData
       });
       reset();
       router.refresh();
@@ -126,7 +127,7 @@ export default function CreateChannel() {
           </div>
           <DialogFooter className="px-6 py-4">
             <Button disabled={isLoading} type="submit" className="bg-purple-900 text-white hover:bg-purple-900/70 transition-all">
-              Crear Canal
+              Editar canal
             </Button>
           </DialogFooter>
         </form>
