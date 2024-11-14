@@ -25,8 +25,7 @@ export default function InitialModal() {
     handleSubmit,
     formState: { errors, isLoading },
     reset,
-    setValue,
-    control
+    setValue
   } = useForm<FormSchemaType>({
     resolver: zodResolver(FormSchema)
   });

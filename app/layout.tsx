@@ -4,6 +4,7 @@ import "./globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
 import { ThemeProvider } from "@/components/providers/theme-provider";
 import ModalProvider from "@/components/providers/ModalProvider";
+import { SocketProvider } from "@/components/providers/SocketProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -21,8 +22,11 @@ export default function RootLayout({
     <ClerkProvider>
       <html lang="en">
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false} storageKey="discord-theme" >
-          <body className={inter.className}>{children}</body>
-          <ModalProvider />
+          <SocketProvider>
+            <body className={inter.className}>{children}</body>
+            <ModalProvider />
+          </SocketProvider>
+
         </ThemeProvider>
       </html>
     </ClerkProvider>

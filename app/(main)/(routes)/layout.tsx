@@ -6,7 +6,7 @@ export default async function LayoutMain({
     children: React.ReactNode
 }) {
     return (
-        <div className="w-full flex flex-row">
+        <div className="w-full grid">
             <div className="hidden md:flex h-full w-[72px] z-30 flex-col fixed inset-y-0">
                 <NavigationSideBar />
             </div>

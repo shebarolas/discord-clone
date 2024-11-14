@@ -16,7 +16,6 @@ import { useEffect } from "react";
 export default function CreateChannel() {
 
   const { isOpen, onClose, type, data } = useModal();
-  console.log(data)
   const params = useParams();
   const router = useRouter();
   const isOpenModal = isOpen && type === "createChannel"
