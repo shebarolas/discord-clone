@@ -12,14 +12,15 @@ import { UploadButton, UploadDropzone } from "@/lib/uploadthing";
 import Image from "next/image";
 import axios from "axios"
 import { useRouter } from "next/navigation";
+import { useModal } from "@/zustand/modal-store";
 
-export default function InitialModal() {
-  const [isMounted, setIsMounted] = useState<boolean>(false)
+export default function CreateServer() {
+
+  const {isOpen, closeModal, type} = useModal();
+  console.log(isOpen, type)
   const [urlImage, setUrlImage] = useState<string>('')
   const router = useRouter();
-  useEffect(() => {
-    setIsMounted(true)
-  }, [])
+ const isOpenModal = isOpen && type === 'createServer';
   const {
     register,
     handleSubmit,
@@ -38,22 +39,25 @@ export default function InitialModal() {
       await axios.post("/api/server", formData);
       reset();
       router.refresh();
-      window.location.reload();
+      closeModal();
     } catch (error) {
       console.log(error);
     }
 
   }
 
-  if (!isMounted) return null;
-
   const onChange = (url: string) => {
     setUrlImage(url)
     setValue("imageUrl", url);
   }
 
+  const handleClose =()=>{
+    closeModal();
+    reset();
+  }
+
   return (
-    <Dialog open>
+    <Dialog open={isOpenModal} onOpenChange={handleClose}>
       <DialogContent className="bg-white text-black overflow-hidden">
         <DialogHeader className="pt-8">
           <DialogTitle className="text-xl text-center">
