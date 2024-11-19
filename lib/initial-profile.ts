@@ -2,6 +2,7 @@ import { auth, currentUser } from "@clerk/nextjs/server"
 import { db } from "./db";
 
 export const initProfile = async () => {
+   
     const user = await currentUser();
 
     if(!user) return auth().redirectToSignIn();
