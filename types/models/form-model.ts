@@ -19,6 +19,13 @@ export const ChannelFormSchema = z.object({
     type: z.nativeEnum(ChannelType)
 });
 
+export const FormSchemaMessageFile = z.object({
+    fileUrl: z.string().min(1, {
+        message: "El archivo es requerido para poder enviarlo"
+    })
+});
+
 
 export type FormSchemaType = z.infer<typeof FormSchema>;
+export type FormSchemaMessageFileType = z.infer<typeof FormSchemaMessageFile>;
 export type ChannelFormSchemaType = z.infer<typeof ChannelFormSchema>;

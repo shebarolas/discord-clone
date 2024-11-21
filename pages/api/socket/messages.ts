@@ -11,7 +11,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponseS
         const profile = await currentProfilePages(req);
         if(!profile) return res.status(401).json({error: "Unauthorized"});
 
-        const {content, channelId, serverId} = await req.body;
+        const {fileUrl, content, channelId, serverId} = await req.body;
+        console.log(await req.body)
         if(!serverId) return res.status(400).json({error: "Server ID is required"});
         if(!channelId) return res.status(400).json({error: "Channel ID is required"});
         if(!content) return res.status(400).json({error: "Content is required"});
@@ -47,7 +48,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponseS
 
         const message = await db.message.create({
             data:{
-                content,
+                fileUrl: fileUrl,
+                content: content,
                 channelId: channelId,
                 memberId: member.id,
             },
