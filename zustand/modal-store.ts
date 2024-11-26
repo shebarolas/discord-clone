@@ -6,7 +6,7 @@ export type ModalType =
   | "editServer"
   | "editMembers"
   | "createChannel"
-  | "leaveServer" | "deleteServer" | "editChannel" | "deleteChannel" | "messageFile"
+  | "leaveServer" | "deleteServer" | "editChannel" | "deleteChannel" | "messageFile" | "deleteMessage"
 interface DataModal {
   server?: Server;
   channelType?: ChannelType;

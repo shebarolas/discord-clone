@@ -29,13 +29,10 @@ const SocketProvider = ({ children }: { children: React.ReactNode }) => {
             transports: ["polling"],
         })
         socketInstance.on("connect", () => {
-            console.log("Connected to server");
-            console.log(socketInstance.id)  
             setIsConnected(true);
         });
 
         socketInstance.on("disconnect", () => {
-            console.log("Disconnected from server");
             setIsConnected(false);
         });
 
@@ -46,7 +43,6 @@ const SocketProvider = ({ children }: { children: React.ReactNode }) => {
             socketInstance.disconnect();
         };
     }, []);
-
     return (
         <SocketContext.Provider value={{ socket, isConnected }}>
             {children}
