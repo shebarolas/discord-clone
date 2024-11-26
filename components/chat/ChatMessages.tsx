@@ -4,7 +4,7 @@ import { Member, Message, Profile } from "@prisma/client";
 import ChatWelcome from "./ChatWelcome";
 import { useChatQuery } from "@/hooks/use-query";
 import { Loader2, ServerCrash } from "lucide-react";
-import { Fragment, useEffect, useState } from "react";
+import { Fragment, useEffect, useRef, useState } from "react";
 import ChatItems from "./ChatItems";
 import { useSocket } from "../providers/SocketProvider";
 
@@ -22,19 +22,10 @@ interface PropsChatMessages {
     type: "channel" | "conversation";
 }
 
-type MessageWithMemberWithProfiel = Message & {
+type MessageWithMemberWithProfile = Message & {
     member: Member & {
         profile: Profile
     }
-}
-
-interface ChatItem {
-    id: string;
-    content: string;
-    member: any;
-    timestamp: string;
-    fileUrl: string | null;
-    deleted: boolean;
 }
 
 export default function ChatMessages({
@@ -49,30 +40,70 @@ export default function ChatMessages({
     type
 }: PropsChatMessages) {
     const queryKey = `chat:${chatId}`;
-    const { data, fetchNextPage, hasNextPage, isFetchingNextPage, status } = useChatQuery({
+    const { data, status } = useChatQuery({
         queryKey,
         apiUrl,
         paramKey,
         paramValue
     });
-
+    const messagesEndRef = useRef<HTMLDivElement>(null);
     const { socket } = useSocket();
-    const [messages, setMessages] = useState<ChatItem[]>([]);
+    const [messages, setMessages] = useState<MessageWithMemberWithProfile[]>([]);
+
+    useEffect(() => {
+        if (data?.pages) {
+            // Aseguramos de que los mensajes se carguen correctamente al final
+            const loadedMessages = data.pages.flatMap((page) => page.items);
+            setMessages((prevMessages) => {
+                const messageIds = new Set(prevMessages.map((msg) => msg.id));
+                console.log(messageIds)
+                const newMessages = loadedMessages.filter(
+                    (msg) => !messageIds.has(msg.id)
+                );;
+                return [...prevMessages, ...newMessages];
+            });
+        }
+    }, [data]);
 
     useEffect(() => {
         if (!socket || !socketQuery.channelId) return;
 
         const channelKey = `chat:${socketQuery.channelId}:message`;
 
-        // Escuchar nuevos mensajes
-        socket.on(channelKey, (newMessage: ChatItem) => {
-            setMessages((prevMessages) => [...prevMessages, newMessage]);
+        // Escuchar nuevos mensajes por WebSocket
+        socket.on(channelKey, (newMessage: MessageWithMemberWithProfile) => {
+            console.log(newMessage, channelKey);
+            setMessages((prevMessages) => {
+                console.log(newMessage)
+                console.log(prevMessages)
+                if (!prevMessages.some((msg) => msg.id === newMessage.id)) {
+                    return [newMessage ,...prevMessages]; // Agregar el nuevo mensaje al final
+                }
+                return prevMessages;
+            });
         });
-
+        const updateKeyEdit = `chat:${socketQuery.channelId}:message:update`;
+        console.log(updateKeyEdit)
+        // Escuchar edición de mensajes por WebSocket
+        socket.on(updateKeyEdit, (updatedMessage: MessageWithMemberWithProfile) => {
+            setMessages((prevMessages) => {
+                return prevMessages.map((msg) =>
+                    msg.id === updatedMessage.id ? updatedMessage : msg
+                );
+            });
+        });
         return () => {
             socket.off(channelKey);
+            socket.off(updateKeyEdit);
         };
     }, [socket, socketQuery.channelId]);
+
+    useEffect(() => {
+        // Scroll al final cada vez que los mensajes cambian
+        if (messagesEndRef.current) {
+            messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
+        }
+    }, [messages]);
 
     if (status === "pending") return (
         <div className="flex flex-col flex-1 justify-center items-center">
@@ -81,7 +112,8 @@ export default function ChatMessages({
                 Cargando mensajes....
             </p>
         </div>
-    )
+    );
+
     if (status === "error") return (
         <div className="flex flex-col flex-1 justify-center items-center">
             <ServerCrash className="h-7 w-7 text-zinc-500 my-4" />
@@ -89,41 +121,36 @@ export default function ChatMessages({
                 Error al cargar los mensajes
             </p>
         </div>
-    )
+    );
 
     return (
         <div className="flex-1 flex flex-col py-4 overflow-y-auto">
             <div className="flex-1" />
-            <ChatWelcome
-                type={type}
-                name={name}
-            />
+            <ChatWelcome type={type} name={name} />
             <div className="flex flex-col-reverse mt-auto">
-                {data?.pages?.map((group, id) => (
-                    <Fragment key={id}>
-                        {group?.items?.map((message: MessageWithMemberWithProfiel) => (
-                            <ChatItems
-                                key={message.id}
-                                id={message.id}
-                                content={message.content}
-                                fileUrl={message.fileUrl}
-                                member={message.member}
-                                currentMember={member}
-                                deleted={message.deteled}
-                                timestamp={format(new Date(message.createAt), DATE_FORMAT)}
-                                isUpdated={message.updateAt !== message.createAt}
-                                socketUrl={socketUrl}
-                                socketQuery={socketQuery}
-                            />
-                        ))}
-                    </Fragment>
+                {messages.map((message: MessageWithMemberWithProfile) => (
+                    <ChatItems
+                        key={message.id}
+                        id={message.id}
+                        content={message.content}
+                        fileUrl={message.fileUrl}
+                        member={message.member}
+                        currentMember={member}
+                        deleted={message.deteled}
+                        timestamp={format(new Date(message.createAt), DATE_FORMAT)}
+                        isUpdated={message.updateAt !== message.createAt}
+                        socketUrl={socketUrl}
+                        socketQuery={socketQuery}
+                    />
                 ))}
+                {/* Referencia para hacer scroll al final */}
+                <div ref={messagesEndRef} />
             </div>
-            {messages.map((message) => (
-                <div key={message.id}>
-                    <p>{message.content}</p>
-                </div>
-            ))}
+            {/* {hasNextPage && (
+                <button onClick={() => fetchNextPage()} disabled={isFetchingNextPage}>
+                    {isFetchingNextPage ? "Cargando..." : "Cargar más"}
+                </button>
+            )} */}
         </div>
-    )
+    );
 }

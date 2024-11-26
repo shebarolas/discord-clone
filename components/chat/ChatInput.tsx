@@ -35,7 +35,6 @@ export default function ChatInput({
   })
 
   const onSubmit: SubmitHandler<FormSchemaTypeChat> = async (formData) => {
-    console.log(formData);
     try {
       await axios.post(apiUrl, {
         ...query,

@@ -11,7 +11,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponseS
         if(!profile) return res.status(401).json({error: "Unauthorized"});
 
         const {fileUrl, content, channelId, serverId} = await req.body;
-        console.log(await req.body)
+
         if(!serverId) return res.status(400).json({error: "Server ID is required"});
         if(!channelId) return res.status(400).json({error: "Channel ID is required"});
         if(!content) return res.status(400).json({error: "Content is required"});
