@@ -23,15 +23,14 @@ const SocketProvider = ({ children }: { children: React.ReactNode }) => {
     const [isConnected, setIsConnected] = useState<boolean>(false);
 
     useEffect(() => {
-        const socketInstance = new (ClientIO as any)("ws://localhost:3000", {
+        const socketInstance = ClientIO (process.env.NEXT_PUBLIC_SITE_URL!, {
             path: "/api/socket/io",
-            addTrailingSlash: false,
-            transports: ['websocket', 'polling'],
-        });
-
-
+            addTrailingSlash: true,
+            transports: ["polling"],
+        })
         socketInstance.on("connect", () => {
-            console.log("Connected to server"); 
+            console.log("Connected to server");
+            console.log(socketInstance.id)  
             setIsConnected(true);
         });
 

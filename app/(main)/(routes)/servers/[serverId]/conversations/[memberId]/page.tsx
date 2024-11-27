@@ -1,4 +1,5 @@
 import ChatHeader from "@/components/chat/ChatHeader";
+import ChatInput from "@/components/chat/ChatInput";
 import { getOrCreateConversation } from "@/lib/conversation";
 import { currentProfile } from "@/lib/current-profile";
 import { db } from "@/lib/db";
@@ -45,6 +46,8 @@ export default async function page({ params }: MemmberProps) {
         serverId={params.serverId}
         type="conversation"
       />
+      <div className="flex-1">Messages</div>
+      <ChatInput />
     </div>
   )
 }

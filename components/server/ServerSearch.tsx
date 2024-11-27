@@ -17,7 +17,6 @@ interface Props {
 }
 
 export default function ServerSearch({ data }: Props) {
-  console.log(data);
   const [open, setOpen] = useState<boolean>(false)
 
   useEffect(() => {
