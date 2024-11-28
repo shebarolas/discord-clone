@@ -15,7 +15,6 @@ export default function InvitePeople() {
   const {onOpen, isOpen, onClose, type, data} = useModal();
   const origin = useOrigin();
   const server = data?.server;
-  console.log(server)
 
   const isOpenModal = isOpen && type === "inivte"
 

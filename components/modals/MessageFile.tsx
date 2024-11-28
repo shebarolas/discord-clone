@@ -39,7 +39,7 @@ export default function MessageFile() {
   }
 
   const CreateServer: SubmitHandler<FormSchemaMessageFileType> = async (formData) => {
-    console.log(formData, apiUrl, query)
+
     try {
       await axios.post(apiUrl ?? "", {
         ...formData,
@@ -47,8 +47,7 @@ export default function MessageFile() {
         content: formData.fileUrl
       });
       reset();
-      router.refresh();
-      window.location.reload();
+      onClose();
     } catch (error) {
       console.log(error);
     }

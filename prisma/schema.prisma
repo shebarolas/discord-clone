@@ -99,7 +99,7 @@ model Message {
   channelId String
   channel   Channel @relation(fields: [channelId], references: [id], onDelete: Cascade)
 
-  deteled Boolean @default(false)
+  deleted Boolean @default(false)
 
   createAt DateTime @default(now())
   updateAt DateTime @updatedAt

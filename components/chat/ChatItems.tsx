@@ -43,6 +43,7 @@ export default function ChatItems({
     socketUrl,
     socketQuery
 }: ChatItemsProps) {
+  
     const fileType = fileUrl?.split('.').pop();
     const isPdf = fileType === 'pdf' && fileUrl;
     const isImage = !isPdf && fileUrl;
@@ -53,7 +54,6 @@ export default function ChatItems({
     const canDeleted = !deleted && (isAdmin || isModerator || isOwner)
     const canEdit = !deleted && isOwner && !fileUrl
     const [isEditing, setIsEditing] = useState<boolean>(false);
-    const [isDeleting, setIsDeleting] = useState<boolean>(false);
     const params = useParams();
     const router = useRouter();
 
