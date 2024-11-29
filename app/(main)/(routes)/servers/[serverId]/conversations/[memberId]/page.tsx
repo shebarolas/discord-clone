@@ -1,6 +1,7 @@
 import ChatHeader from "@/components/chat/ChatHeader";
 import ChatInput from "@/components/chat/ChatInput";
 import ChatMessages from "@/components/chat/ChatMessages";
+import RoomMedia from "@/components/RoomMedia";
 import { getOrCreateConversation } from "@/lib/conversation";
 import { currentProfile } from "@/lib/current-profile";
 import { db } from "@/lib/db";
@@ -11,10 +12,13 @@ interface MemmberProps {
   params: {
     memberId: string;
     serverId: string;
+  },
+  searchParams: {
+    video?: boolean;
   }
 }
 
-export default async function page({ params }: MemmberProps) {
+export default async function page({ params, searchParams }: MemmberProps) {
   const profile = await currentProfile();
 
   if (!profile) return auth().redirectToSignIn();
@@ -47,20 +51,33 @@ export default async function page({ params }: MemmberProps) {
         serverId={params.serverId}
         type="conversation"
       />
-      <ChatMessages member={currentMember} name={otherMember.profile.name} chatId={conversation.id} type="conversation" apiUrl="/api/directMessages"
-        paramKey="conversationId" paramValue={conversation.id} socketQuery={{
-          conversationId: conversation.id
-        }}
-        socketUrl="/api/socket/directMessages"
-      />
-      <ChatInput
-        name={otherMember.profile.name}
-        type="conversation"
-        apiUrl="/api/socket/directMessages"
-        query={{
-          conversationId: conversation.id
-        }}
-      />
+      {!searchParams.video && (
+        <>
+          <ChatMessages member={currentMember} name={otherMember.profile.name} chatId={conversation.id} type="conversation" apiUrl="/api/directMessages"
+            paramKey="conversationId" paramValue={conversation.id} socketQuery={{
+              conversationId: conversation.id
+            }}
+            socketUrl="/api/socket/directMessages"
+          />
+          <ChatInput
+            name={otherMember.profile.name}
+            type="conversation"
+            apiUrl="/api/socket/directMessages"
+            query={{
+              conversationId: conversation.id
+            }}
+          />
+        </>
+      )}
+
+      {searchParams.video && (
+        <RoomMedia
+          chatId={conversation.id}
+          audio={true}
+          video={true}
+        />
+      )}
+
     </div>
   )
 }

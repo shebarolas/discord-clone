@@ -58,7 +58,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponseS
             }
         });
 
-        if(!message || message.deteled) return res.status(404).json({error: "Message not found"});
+        if(!message || message.deleted) return res.status(404).json({error: "Message not found"});
 
         const isMessageOwner = message.memberId === member.id;
         const isAdmin = member.rol === MemberRole.ADMIN;
@@ -75,7 +75,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponseS
                 data: {
                     fileUrl: null,
                     content: "Este mensaje ha sido eliminado",
-                    deteled: true
+                    deleted: true
                 },
                 include: {
                     member: {

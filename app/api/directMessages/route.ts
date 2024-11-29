@@ -61,7 +61,6 @@ export async function GET(req: Request) {
         if(message.length === MESSAGES_COUNT){
             nextCursor = message[MESSAGES_COUNT - 1].id;
         }
-        console.log(message)
         return NextResponse.json({
             items: message,
             nextCursor
