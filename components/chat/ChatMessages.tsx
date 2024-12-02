@@ -125,7 +125,7 @@ export default function ChatMessages({
             <div className="flex flex-col-reverse mt-auto">
                 <div ref={messagesEndRef} />
                 {messages.map((message: MessageWithMemberWithProfile) => (
-                    <div className="">
+                    <div key={message.id}>
                         <ChatItems
                         key={message.id}
                         id={message.id}

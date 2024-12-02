@@ -2,6 +2,7 @@ import { Hash } from "lucide-react";
 import MobileToggle from "../MobileToggle";
 import SocketIndicator from "../SocketIndicator";
 import ChatVideoButton from "./ChatVideoButton";
+import Image from "next/image";
 
 interface PropsChat {
     serverId: string;
@@ -20,7 +21,7 @@ export default function ChatHeader({ serverId, name, type, imageUrl }: PropsChat
             }
             {
                 type === "conversation" && (
-                    <img src={imageUrl} alt="member image" className="h-6 w-6 rounded-xl"/>
+                    <Image src={imageUrl || ""} alt="member image" fill className="h-6 w-6 rounded-xl"/>
                 )
             }
             <p className="font-semibold text-sm text-black dark:text-white">{name}</p>

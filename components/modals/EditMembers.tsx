@@ -121,8 +121,8 @@ export default function EditMembers() {
                           <DropdownMenuPortal>
                             <DropdownMenuSubContent>
                               {
-                                typeRoles.map((role) => (
-                                  <DropdownMenuItem className="flex flex-row items-center gap-1" onClick={() => onRoleChange(member.id, role.type)}>
+                                typeRoles.map((role, index) => (
+                                  <DropdownMenuItem className="flex flex-row items-center gap-1" key={index} onClick={() => onRoleChange(member.id, role.type)}>
                                     {role.icon}
                                     <p className="text-xs">{role.type}</p>
                                     {role.type === member.rol && (
