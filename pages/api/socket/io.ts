@@ -16,7 +16,7 @@ const ioHandler = (req: NextApiRequest, res: NextApiResponseServerIo) => {
       path: "/api/socket/io",
       // Asegúrate de que soporte websocket y polling
       cors: {
-        origin: process.env.NEXT_PUBLIC_SITE_URL || "ws://localhost:3000",
+        origin: process.env.NEXT_PUBLIC_SITE_URL,
         methods: ["GET", "POST"],
         credentials: true,
       },
