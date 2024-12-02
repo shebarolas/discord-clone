@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { AccessToken } from 'livekit-server-sdk';
+import { v4 as uuidv4 } from 'uuid'
 
 export async function GET(req: NextRequest) {
   const room = req.nextUrl.searchParams.get('room');
@@ -17,8 +18,9 @@ export async function GET(req: NextRequest) {
   if (!apiKey || !apiSecret || !wsUrl) {
     return NextResponse.json({ error: 'Server misconfigured' }, { status: 500 });
   }
+  const uniqueIdentity = `${username}-${uuidv4()}`;
 
-  const at = new AccessToken(apiKey, apiSecret, { identity: username });
+  const at = new AccessToken(apiKey, apiSecret, { identity: uniqueIdentity });
 
   at.addGrant({ room, roomJoin: true, canPublish: true, canSubscribe: true });
 

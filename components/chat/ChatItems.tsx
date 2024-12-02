@@ -66,7 +66,7 @@ export default function ChatItems({
       window.addEventListener("keydown", ahndleKeyDown);
     }, [])
 
-    const { register, handleSubmit, formState: {isLoading}, setValue, control } = useForm<FormSchemaTypeChat>({
+    const {handleSubmit, formState: {isLoading}, setValue, control } = useForm<FormSchemaTypeChat>({
         resolver: zodResolver(FormSchema),
         defaultValues: {
             content: content
